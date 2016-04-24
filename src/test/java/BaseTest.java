@@ -16,7 +16,7 @@ public class BaseTest {
 
         try {
             TTransport transport;
-            transport = new TSocket("192.168.243.140", 9090);
+            transport = new TSocket("192.168.243.141", 9090);
             transport.open();
             TProtocol protocol = new TBinaryProtocol(transport);
             RedisProxyService.Client client = new RedisProxyService.Client(protocol);
