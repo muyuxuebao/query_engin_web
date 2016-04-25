@@ -14,11 +14,36 @@
     <!-- 开启注解 -->
     <mvc:annotation-driven/>
 
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:config.properties</value>
+        </property>
+    </bean>
+
     <!--ViewResolver 视图解析器-->
     <!--用于支持Servlet、JSP视图解析-->
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="transport" class="org.apache.thrift.transport.TSocket">
+        <constructor-arg index="0">
+            <value>${host}</value>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <value>${port}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="protocol" class="org.apache.thrift.protocol.TBinaryProtocol">
+        <constructor-arg ref="transport"/>
+    </bean>
+    <bean id="client" class="com.query_engin.thrift.thriftImpl.RedisProxyService.Client">
+        <constructor-arg ref="protocol"/>
+    </bean>
+
+    <bean id="thriftProxy" class="com.query_engin.thrift.ThriftProxy" init-method="init" destroy-method="exit">
     </bean>
 </beans>
