@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by dzkan on 2016/3/8.
@@ -29,50 +31,65 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = "/addUser", method = RequestMethod.GET)
-    public String addUser(@RequestParam("a_user_name") String a_user_name) {
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> addUser(@RequestParam("a_user_name") String a_user_name) {
         System.out.println("a_user_name  = " + a_user_name);
+
+        Map<String, Object> map = new HashMap<String, Object>();
         User user = new User();
         user.setName(a_user_name);
         try {
             long id = thriftProxy.addUser(user);
             System.out.println("The id of user is " + id);
+            map.put("result", true);
         } catch (TException e) {
-            e.printStackTrace();
+            map.put("result", false);
         }
-        return "index";
+        return map;
     }
 
-    @RequestMapping(value = "/addWord", method = RequestMethod.GET)
-    public String addWord(@RequestParam("a_word_name") String a_word_name) {
+    @RequestMapping(value = "/addWord", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> addWord(@RequestParam("a_word_name") String a_word_name) {
         System.out.println("a_word_name  = " + a_word_name);
+
+        Map<String, Object> map = new HashMap<String, Object>();
         Word word = new Word();
         word.setName(a_word_name);
         try {
             long id = thriftProxy.addWord(word);
             System.out.println("The id of word is " + id);
+            map.put("result", true);
         } catch (TException e) {
-            e.printStackTrace();
+            map.put("result", false);
         }
-        return "index";
+        return map;
     }
 
-    @RequestMapping(value = "/userbuyword", method = RequestMethod.GET)
-    public String userbuyword(@RequestParam("userselect") long userselect, @RequestParam("userselect") long wordselect) {
+    @RequestMapping(value = "/userbuyword", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> userbuyword(@RequestParam("userId") long userId, @RequestParam("wordId") long wordId) {
+        System.out.println("userId = " + userId + " ,wordId = " + wordId);
+        Map<String, Object> map = new HashMap<String, Object>();
         try {
-            this.thriftProxy.userBuyWord(userselect, wordselect);
+            this.thriftProxy.userBuyWord(userId, wordId);
+            map.put("result", true);
         } catch (TException e) {
-            e.printStackTrace();
+            map.put("result", false);
         }
-        return "index";
+        return map;
     }
 
     @RequestMapping(value = "/userquery", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> userquery(@RequestParam("searchstr") String searchstr) {
+        System.out.println("userquery " + searchstr);
+
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            map.put("chargeusers", thriftProxy.getChargeUsers(searchstr));
+            List<User> chargeusers = thriftProxy.getChargeUsers(searchstr);
+            map.put("chargeusers", chargeusers);
         } catch (TException e) {
             e.printStackTrace();
         }

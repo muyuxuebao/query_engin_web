@@ -27,9 +27,9 @@
 
 <body>
 <hr>
-<p class="active-tab"><strong>激活的标签页</strong>：<span></span></p>
+<p class="active-tab"><strong>Activated TAB</strong>：<span></span></p>
 
-<p class="previous-tab"><strong>前一个激活的标签页</strong>：<span></span></p>\
+<p class="previous-tab"><strong>Previous Activated TAB</strong>：<span></span></p>
 
 
 <hr>
@@ -42,19 +42,6 @@
     <li><a href="#addword" data-toggle="tab">Add key words</a></li>
     <li><a href="#userbuyword" data-toggle="tab">User buy key word</a></li>
     <li><a href="#userquery" data-toggle="tab">User Search</a></li>
-    <%--<li class="dropdown">--%>
-    <%--<a href="#" id="myTabDrop1" class="dropdown-toggle"--%>
-    <%--data-toggle="dropdown">Java <b class="caret"></b>--%>
-    <%--</a>--%>
-    <%--<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">--%>
-    <%--<li><a href="#jmeter" tabindex="-1" data-toggle="tab">--%>
-    <%--jmeter</a>--%>
-    <%--</li>--%>
-    <%--<li><a href="#ejb" tabindex="-1" data-toggle="tab">--%>
-    <%--ejb</a>--%>
-    <%--</li>--%>
-    <%--</ul>--%>
-    <%--</li>--%>
 </ul>
 <div id="myTabContent" class="tab-content">
     <div class="tab-pane fade in active" id="home">
@@ -64,52 +51,46 @@
             京东旗下网站：京东钱包</p>
     </div>
     <div class="tab-pane fade" id="adduser">
-        <form action="addUser">
-            <table>
-                <tr>
-                    <td>请输入用户名：</td>
-                    <td><input type="text" name="a_user_name" id="a_user_name"/></td>
-                    <td><input type="submit" value="submit"></td>
-                </tr>
-            </table>
-        </form>
+        <table>
+            <tr>
+                <td>Please input the name of user:</td>
+                <td><input type="text" name="a_user_name" id="a_user_name"/></td>
+                <td><input type="button" value="submit" id="add_user_submit"></td>
+            </tr>
+        </table>
     </div>
     <div class="tab-pane fade" id="addword">
-        <form action="addWord">
-            <table>
-                <tr>
-                    <td>请输入用户名：</td>
-                    <td><input type="text" name="a_word_name" id="a_word_name"/></td>
-                    <td><input type="submit" value="submit"></td>
-                </tr>
-            </table>
-        </form>
+        <table>
+            <tr>
+                <td>Please input keyword:</td>
+                <td><input type="text" name="a_word_name" id="a_word_name"/></td>
+                <td><input type="button" value="submit" id="add_word_submit"></td>
+            </tr>
+        </table>
     </div>
 
 
     <div class="tab-pane fade" id="userbuyword">
-        <form action="userbuyword">
-            <table>
-                <tr>
-                    <td>Please chose user:</td>
-                    <td>
-                        <select class="form-control" id="userselect" name="userselect">
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Please chose key word:</td>
-                    <td>
-                        <select class="form-control" id="wordselect" name="wordselect">
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="submit" id="b_submit"></td>
-                </tr>
-            </table>
-        </form>
+        <table>
+            <tr>
+                <td>Please chose user:</td>
+                <td>
+                    <select class="form-control" id="userselect" name="userselect">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Please chose key word:</td>
+                <td>
+                    <select class="form-control" id="wordselect" name="wordselect">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="button" value="submit" id="userbuyword_submit"></td>
+            </tr>
+        </table>
     </div>
     <div class="tab-pane fade" id="userquery">
         <form>
@@ -121,6 +102,18 @@
                 </tr>
             </table>
         </form>
+
+        <table class="table table-bordered">
+            <caption>Users to be charged</caption>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody id="charge_user_table">
+            </tbody>
+        </table>
     </div>
 </div>
 <script>
@@ -130,31 +123,100 @@
 
 
     $(function () {
+        $("#userbuyword_submit").click(function () {
+//            var a_user_name = $("#a_user_name")[0].value;
+//            alert(a_user_name);
+
+            var userId = $("#userselect").val();
+            var wordId = $("#wordselect").val();
+//            alert("userId = " + userId + " wordId = " + wordId);
+
+
+            $.ajax({
+                url: "userbuyword",
+                type: "post",
+                async: false,
+                data: {
+                    userId: userId,
+                    wordId: wordId
+                },
+                dataType: "json",
+                success: function (data) {
+                    alert("User buy word successfully");
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("User buy word failed");
+                }
+            });
+        });
+
+        $("#add_user_submit").click(function () {
+            var a_user_name = $("#a_user_name")[0].value;
+//            alert(a_user_name);
+
+
+            $.ajax({
+                url: "addUser",
+                type: "post",
+                async: false,
+                data: {
+                    a_user_name: a_user_name
+                },
+                dataType: "json",
+                success: function (data) {
+                    alert("Add user successfully");
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Add user failed");
+                }
+            });
+        });
+
+
+        $("#add_word_submit").click(function () {
+            var a_word_name = $("#a_word_name")[0].value;
+//            alert(a_user_name);
+
+
+            $.ajax({
+                url: "addWord",
+                type: "post",
+                async: false,
+                data: {
+                    a_word_name: a_word_name
+                },
+                dataType: "json",
+                success: function (data) {
+                    alert("Add word successfully");
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Add word failed");
+                }
+            });
+        });
+
 
         $("#querybtn").click(function () {
             var str = $("#searchstr")[0].value;
-            alert(str);
+//            alert(str);
             $.ajax({
                 url: "userquery",
                 type: "post",
                 async: false,
                 data: {
-                    pin: "aafsd",
-                    money: 12.3
+                    searchstr: str
                 },
                 dataType: "json",
                 success: function (data) {
-                    var userList = data.userList;
-                    for (var i in userList) {
-                        $("#userselect").append("<option value='" + userList[i].id + "'>" + userList[i].name + "</option>");
+                    $("#charge_user_table").html("");
+
+                    var chargeusers = data.chargeusers;
+                    for (var i in chargeusers) {
+                        var table_line = "<tr><td>" + chargeusers[i].id + "</td><td>" + chargeusers[i].name + "</td></tr>";
+                        $("#charge_user_table").append(table_line);
+
+
                     }
-
-
-                    var wordList = data.wordList;
-                    for (var i in wordList) {
-                        $("#wordselect").append("<option value='" + userList[i].id + "'>" + userList[i].name + "</option>");
-                    }
-
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("bbb");
@@ -182,12 +244,14 @@
                             },
                             dataType: "json",
                             success: function (data) {
+                                $("#userselect").html("");
                                 var userList = data.userList;
                                 for (var i in userList) {
                                     $("#userselect").append("<option value='" + userList[i].id + "'>" + userList[i].name + "</option>");
                                 }
 
 
+                                $("#wordselect").html("");
                                 var wordList = data.wordList;
                                 for (var i in wordList) {
                                     $("#wordselect").append("<option value='" + wordList[i].id + "'>" + wordList[i].name + "</option>");
