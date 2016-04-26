@@ -190,7 +190,7 @@
 
                                 var wordList = data.wordList;
                                 for (var i in wordList) {
-                                    $("#wordselect").append("<option value='" + userList[i].id + "'>" + userList[i].name + "</option>");
+                                    $("#wordselect").append("<option value='" + wordList[i].id + "'>" + wordList[i].name + "</option>");
                                 }
 
                             },
