@@ -54,7 +54,9 @@ public class ThriftProxy {
     }
 
     public List<User> getChargeUsers(String str) throws TException {
-        return client.getChargeUsers(str);
+        Word word = new Word();
+        word.setName(str);
+        return client.getChargeUsers(word);
     }
     //getChargeUsers
 

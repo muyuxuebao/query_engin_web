@@ -45,6 +45,7 @@ public class MainController {
             map.put("result", true);
         } catch (TException e) {
             map.put("result", false);
+            map.put("error_msg", e.getMessage());
         }
         return map;
     }

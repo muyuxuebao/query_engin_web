@@ -118,7 +118,7 @@
 </div>
 <script>
     $(function () {
-        $('#myTab li:eq(3) a').tab('show');
+        $('#myTab li:eq(0) a').tab('show');
     });
 
 
@@ -164,7 +164,11 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    alert("Add user successfully");
+                    if (data.result == true) {
+                        alert("Add user successfully");
+                    } else {
+                        alert("Add user failed" + data.error_msg);
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Add user failed");
