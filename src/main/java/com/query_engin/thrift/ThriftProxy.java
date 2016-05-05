@@ -22,16 +22,8 @@ import java.util.List;
 public class ThriftProxy {
     @Autowired
     RedisProxyService.Client client;
-    @Autowired
-    TTransport transport;
 
-    void init() throws TTransportException {
-        transport.open();
-    }
 
-    void exit() {
-        transport.close();
-    }
 
     public long addUser(User user) throws TException {
         return client.addUser(user);

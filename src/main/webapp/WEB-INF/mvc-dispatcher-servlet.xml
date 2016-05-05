@@ -44,6 +44,19 @@
         <constructor-arg ref="protocol"/>
     </bean>
 
-    <bean id="thriftProxy" class="com.query_engin.thrift.ThriftProxy" init-method="init" destroy-method="exit">
+    <bean id="thriftProxy" class="com.query_engin.thrift.ThriftProxy">
     </bean>
+
+
+    <mvc:interceptors>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/addUser"/>
+            <mvc:mapping path="/addWord"/>
+            <mvc:mapping path="/userbuyword"/>
+            <mvc:mapping path="/userquery"/>
+            <mvc:mapping path="/initpage"/>
+            <bean class="com.query_engin.Interceptor.RedisInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

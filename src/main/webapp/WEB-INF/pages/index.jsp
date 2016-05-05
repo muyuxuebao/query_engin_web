@@ -96,7 +96,7 @@
         <form>
             <table>
                 <tr>
-                    <td>请输入要搜索的词汇：</td>
+                    <td>Please input a string to search:</td>
                     <td><input type="text" name="searchstr" id="searchstr"/></td>
                     <td><input type="button" value="submit" id="querybtn"></td>
                 </tr>
